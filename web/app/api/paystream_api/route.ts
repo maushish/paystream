@@ -19,18 +19,21 @@ export async function POST(request: Request) {
   const userPublicKey = postRequest.account;
   console.log(userPublicKey);
 
-  const connection = new Connection(clusterApiUrl("mainnet-beta"));
+  const connection = new Connection(clusterApiUrl("devnet"), "finalized");
   const tx = new Transaction();
   tx.feePayer = new PublicKey(userPublicKey);
   tx.recentBlockhash = (await connection.getLatestBlockhash({commitment: "finalized"})).blockhash;
   const serialTX = tx.serialize({requireAllSignatures:false, verifySignatures:false,}).toString("base64");
-  const response : ActionPostResponse = {
+  const responseBody : ActionPostResponse = {
     transaction: serialTX,
     message: "work in progress,"+userPublicKey,
   };
 
-  return Response.json(response , {headers: ACTIONS_CORS_HEADERS});
+
+
+  return Response.json(responseBody , {headers: ACTIONS_CORS_HEADERS});
 }
+
 
 export async function OPTIONS(request: Request) {
   return new Response(null, { headers: ACTIONS_CORS_HEADERS });
