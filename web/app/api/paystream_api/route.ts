@@ -4,7 +4,7 @@ import { clusterApiUrl, Connection, PublicKey, SystemProgram, Transaction } from
 export async function GET(request: Request) {
   const response : ActionGetResponse = {
     icon: "https://raw.githubusercontent.com/maushish/paystream/main/web/public/paystream.png",
-    description: "A trustless-escrow blink that provides user and client a secure and trustless way to pay for services.",
+    description: "An on-chain streams based blink that provides user and client a secure and trustless way to pay for services **PayStream** is a work in progress and is not yet ready for production use.",
     label: "pay via streams",
     title: "PayStream",
     error: {
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   const userPublicKey = postRequest.account;
   console.log(userPublicKey);
 
-  const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
+  const connection = new Connection(clusterApiUrl("mainnet-beta"));
   const tx = new Transaction();
   tx.feePayer = new PublicKey(userPublicKey);
   tx.recentBlockhash = (await connection.getLatestBlockhash({commitment: "finalized"})).blockhash;
