@@ -4,7 +4,7 @@ import { clusterApiUrl, Connection, PublicKey, SystemProgram, Transaction } from
 export async function GET(request: Request) {
   const response : ActionGetResponse = {
     icon: "https://raw.githubusercontent.com/maushish/paystream/main/web/public/paystream.png",
-    description: "trustless-escrow",
+    description: "A trustless-escrow blink that provides user and client a secure and trustless way to pay for services.",
     label: "pay via streams",
     title: "PayStream",
     error: {
