@@ -11,10 +11,24 @@ export async function GET(request: Request) {
         {
           label:"Sender's address",
           href:"request.url",
+          parameters:[
+            {
+              name:"Confirm",
+              label:"Stream owner address",
+              required:true,
+            }
+          ]
         },
         {
           label:"Receiver's address",
           href:"request.url",
+          parameters:[
+            {
+              name:"Confirm",
+              label:"Service Provider's address",
+              required:true,
+            }
+          ]
         },
         {
           label:"Amount",
