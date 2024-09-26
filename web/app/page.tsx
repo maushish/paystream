@@ -4,7 +4,7 @@ import { useEffect } from "react";
 export default function Home() {
   useEffect(() => {
     window.location.href =
-      "https://dial.to/?action=solana-action%3Ahttps%3A%2F%2Fpaystream.maushish.com%2Fapi%2Fpaystream_api&cluster=mainnet";
+      "https://dial.to/?action=solana-action%3Ahttps%3A%2F%2Fpaystream.maushish.com%2Fapi%2Fpaystream_api&cluster=devnet";
   }, []);
 
   return (
