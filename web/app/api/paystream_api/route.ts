@@ -1,7 +1,6 @@
 import { publicKey } from "@coral-xyz/anchor/dist/cjs/utils";
 import { ActionGetResponse, ActionPostRequest, ActionPostResponse, ACTIONS_CORS_HEADERS,BLOCKCHAIN_IDS } from "@solana/actions";
 import { clusterApiUrl, Connection, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
-import {Response} from "node-fetch";
 export async function GET(request: Request) {
   const response : ActionGetResponse = {
     icon: "https://raw.githubusercontent.com/maushish/paystream/main/web/public/paystream.png",
@@ -12,7 +11,7 @@ export async function GET(request: Request) {
      message: "this blink is work in progress!!"
     },
   }
-    return Response.json(response ,   {headers: {...ACTIONS_CORS_HEADERS, "X-Action-Version": "1.0", "X-Blockchain-Ids": "solana"}});
+  return Response.json(response , {headers: ACTIONS_CORS_HEADERS});
 }
 
 export async function POST(request: Request) {
