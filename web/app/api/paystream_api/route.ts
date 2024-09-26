@@ -1,5 +1,5 @@
 import { publicKey } from "@coral-xyz/anchor/dist/cjs/utils";
-import { ActionGetResponse, ActionPostRequest, ActionPostResponse, ACTIONS_CORS_HEADERS,BLOCKCHAIN_IDS } from "@solana/actions";
+import { ActionGetResponse, ActionPostRequest, ActionPostResponse, ACTIONS_CORS_HEADERS, } from "@solana/actions";
 import { clusterApiUrl, Connection, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 export async function GET(request: Request) {
   const response : ActionGetResponse = {
@@ -11,8 +11,15 @@ export async function GET(request: Request) {
      message: "this blink is work in progress!!"
     },
   }
-  return Response.json(response , {headers: ACTIONS_CORS_HEADERS});
-}
+
+  const headers = {
+    ...ACTIONS_CORS_HEADERS,   // CORS headers from ACTIONS_CORS_HEADERS
+    "X-Action-Version": "1.0", // Custom header for action version
+    "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
+  };
+  return new Response(JSON.stringify(response), {
+    headers: headers,
+  });}
 
 export async function POST(request: Request) {
   const postRequest: ActionPostRequest = await request.json();
