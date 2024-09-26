@@ -5,8 +5,8 @@ export const GET = async () => {
     rules: [
       
       {
-        pathPattern: "/*",
-        apiPath: "https://paystream.maushish.com/api/*",
+        "pathPattern": "/**",
+        "apiPath": "/api/paystream_api",
       },
      
 

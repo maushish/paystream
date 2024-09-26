@@ -11,7 +11,7 @@ export async function GET(request: Request) {
      message: "this blink is work in progress!!"
     },
   }
-    return Response.json(response , {headers: ACTIONS_CORS_HEADERS});
+    return Response.json(response ,   {headers: ACTIONS_CORS_HEADERS, status: 400});
 }
 
 export async function POST(request: Request) {
@@ -31,10 +31,10 @@ export async function POST(request: Request) {
 
 
 
-  return Response.json(responseBody , {headers: ACTIONS_CORS_HEADERS});
+  return Response.json(responseBody , {headers: ACTIONS_CORS_HEADERS, status: 400});
 }
 
 
 export async function OPTIONS(request: Request) {
-  return new Response(null, { headers: ACTIONS_CORS_HEADERS });
+  return new Response(null, { headers: ACTIONS_CORS_HEADERS, status: 400 });
 }
