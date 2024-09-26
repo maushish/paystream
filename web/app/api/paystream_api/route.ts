@@ -38,8 +38,14 @@ export async function POST(request: Request) {
 
 
 
-  return Response.json(responseBody , {headers: ACTIONS_CORS_HEADERS});
-}
+  const headers = {
+    ...ACTIONS_CORS_HEADERS,   // CORS headers from ACTIONS_CORS_HEADERS
+    "X-Action-Version": "1.0", // Custom header for action version
+    "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
+  };
+  return new Response(JSON.stringify(responseBody), {
+    headers: headers,
+  });}
 
 
 export async function OPTIONS(request: Request) {
