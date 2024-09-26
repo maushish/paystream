@@ -35,6 +35,7 @@ export async function POST(request: Request) {
 }
 
 
-export async function OPTIONS(request: Request) {
-  return new Response(null, { headers: ACTIONS_CORS_HEADERS });
-}
+// export async function OPTIONS(request: Request) {
+//   return new Response(null, { headers: ACTIONS_CORS_HEADERS });
+// }
+export const OPTIONS = GET;

@@ -5,14 +5,14 @@ export const GET = async () => {
     rules: [
       
       {
-        pathPattern: "/*",
-        apiPath: "/api/paystream_api/*",
+        pathPattern: "/",
+        apiPath: "https://paystream.maushish.com/api/paystream_api",
       },
      
-      {
-        pathPattern: "/api/paystream_api/**",
-        apiPath: "/api/paystream_api/**",
-      },
+    //   {
+    //     pathPattern: "https://paystream.maushish.com/api/paystream_api",
+    //     apiPath: "https://paystream.maushish.com/api/paystream_api",
+    //   },
     ],
   };
 
