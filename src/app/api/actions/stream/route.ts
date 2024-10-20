@@ -15,7 +15,7 @@ import {
   export const GET = async (req: Request) => {
     const payload: ActionGetResponse = {
       title: "PaystreamV0",
-      icon: "https://raw.githubusercontent.com/maushish/paystream/main/web/public/paystream.png",
+      icon: "changed",
       description: "An on-chain streams based blink that provides user and client a secure and trustless way to pay for services.",
       links: {
         actions: [
