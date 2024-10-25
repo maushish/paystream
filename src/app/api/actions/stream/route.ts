@@ -3,20 +3,30 @@ import {
     createActionHeaders,
     ActionGetResponse,
     ActionPostRequest,
+    ACTIONS_CORS_HEADERS,
   } from "@solana/actions";
   import { 
     Connection, 
     clusterApiUrl, 
     PublicKey, 
-    Transaction 
+    Transaction,
+    SystemProgram, 
   } from "@solana/web3.js";
-//   import {IDL } from "@/data/idl";
+  import { Program, Idl } from "@coral-xyz/anchor";
+  import { IDL, PaystreamMvp as ImportedPaystreamMvp } from "../../../data/idl"; 
+  import BN from "bn.js"; 
   
+  interface PaystreamMvp extends Idl {
+    version: "0.1.0"; 
+    name: "paystreamMvp";    
+  }
+
   export const GET = async (req: Request) => {
     const payload: ActionGetResponse = {
       title: "PaystreamV0",
-      icon: "https://gcdnb.pbrd.co/images/eIQVKCT500av.png?o=1",
+      icon: "https://gcdnb.pbrd.co/images/eIQVKCT500av.png?o=1  ",
       description: "An on-chain streams based blink that provides user and client a secure and trustless way to pay for services.",
+      label: "Paystream Mvp", // {{ edit_1 }} Added label property
       links: {
         actions: [
           {
@@ -56,15 +66,14 @@ import {
   }
   
   export const OPTIONS = GET;
+
   
   export async function POST(request: Request) {
     try {
       const postRequest: ActionPostRequest = await request.json();
   
       const userPublicKey = postRequest.account;
-      const duration = postRequest.params?.duration;
-      const amount = postRequest.params?.amount;
-      const receiverAddress = postRequest.params?.receiverAddress;
+      const { duration, amount, receiverAddress } = (postRequest.params as { duration?: number; amount?: number; receiverAddress?: string }) || {}; // Type assertion for params
   
       console.log("User Public Key:", userPublicKey);
       console.log("Duration:", duration);
@@ -73,56 +82,35 @@ import {
   
       // Validate inputs
       if (!duration || !amount || !receiverAddress) {
-        return Response.json({ error: "Missing required parameters" }, { status: 400 });
+        return Response.json({ error: "Missing required parameters" }, { status: 400, headers: ACTIONS_CORS_HEADERS });
       }
   
       const connection = new Connection(clusterApiUrl("devnet"), "finalized");
+      const program: Program<PaystreamMvp> = new Program<PaystreamMvp>(IDL as unknown as PaystreamMvp, { connection }); // Ensure IDL is correctly typed
       const tx = new Transaction();
       tx.feePayer = new PublicKey(userPublicKey);
       tx.recentBlockhash = (await connection.getLatestBlockhash({commitment: "finalized"})).blockhash;
   
-      // tx.add(createStreamInstruction(new PublicKey(userPublicKey), new PublicKey(receiverAddress), amount, duration));
   
       const serialTX = tx.serialize({requireAllSignatures:false, verifySignatures:false}).toString("base64");
   
       const responseBody: ActionPostResponse = {
         transaction: serialTX,
         message: `Payment stream created: ${amount} SOL to ${receiverAddress} for ${duration} seconds`,
+        type: "transaction", // Add the required 'type' property
       };
   
-      if (postRequest.account) {
-        responseBody.links = {
-          next: {
-            type: "inline",
-            action: {
-              type: "action",
-              label: "Choose your next action:",
-              icon: "https://raw.githubusercontent.com/maushish/paystream/main/web/public/paystream.png",
-              title: "Next Actions",
-              description: "Select an action to proceed.",
-              links: {
-                actions: [
-                  {
-                    label: "Check stream status",
-                    href: `${request.url}/checkStatus`,
-                    type: "POST",
-                  },
-                  {
-                    label: "Cancel stream",
-                    href: `${request.url}/cancelStream`,
-                    type: "POST",
-                  },
-                  {
-                    label: "Complete action",
-                    href: `${request.url}/complete`,
-                    type: "POST",
-                  },
-                ],
-              },
-            },
-          },
-        };
-      }
+      const [streamAccountPDA] = PublicKey.findProgramAddressSync(
+        [Buffer.from("stream"), new PublicKey(postRequest.account).toBuffer()], // Convert to PublicKey
+        program.programId
+      );
+      
+      // Use streamAccountPDA in the createStreamInstruction
+      const createStreamInstruction = await program.methods.createStream(new BN(duration), new BN(amount), new PublicKey(receiverAddress)).accounts({
+        streamAccount: streamAccountPDA, // Use the declared variable here
+        authority: postRequest.account,
+        systemProgram: SystemProgram.programId,
+      }).instruction();
   
       return Response.json(responseBody, {
         headers: createActionHeaders({ chainId: "devnet", actionVersion: "2.2.1" }),
