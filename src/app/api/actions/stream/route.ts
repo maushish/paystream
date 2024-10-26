@@ -123,7 +123,12 @@ export async function POST(request: Request) {
         type: "transaction", // Add the required type property
       },
     });
-    return new Response(JSON.stringify(response), { headers: ACTIONS_CORS_HEADERS });
+    const headers = {
+      ...ACTIONS_CORS_HEADERS,   // CORS headers from ACTIONS_CORS_HEADERS
+      "X-Action-Version": "1.0", // Custom header for action version
+      "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
+    };
+    return new Response(JSON.stringify(response), { headers: headers });
     
   } catch (error: unknown) {
     console.error("Error in POST handler:", error);
