@@ -48,7 +48,7 @@ export const GET = async (request: Request) => {
   };
   const headers = {
     ...ACTIONS_CORS_HEADERS,   // CORS headers from ACTIONS_CORS_HEADERS
-    "X-Action-Version": "1.0", // Custom header for action version
+    "X-Action-Version": "2.1.3", // Custom header for action version
     "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
   };
   return new Response(JSON.stringify(actionMetdata), {
@@ -125,7 +125,7 @@ export async function POST(request: Request) {
     });
     const headers = {
       ...ACTIONS_CORS_HEADERS,   // CORS headers from ACTIONS_CORS_HEADERS
-      "X-Action-Version": "1.0", // Custom header for action version
+      "X-Action-Version": "2.1.3", // Custom header for action version
       "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
     };
     return new Response(JSON.stringify(response), { headers: headers });
