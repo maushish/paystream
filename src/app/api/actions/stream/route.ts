@@ -46,7 +46,7 @@ export const GET = async (request: Request) => {
       ]
     }
   };
-  return Response.json(actionMetdata, { headers: ACTIONS_CORS_HEADERS });
+  return new Response(JSON.stringify(actionMetdata), { headers: ACTIONS_CORS_HEADERS });
 }
 
 export const OPTIONS = GET;
@@ -79,7 +79,6 @@ export async function POST(request: Request) {
 
     const programId = new PublicKey("GHsd2cgzpaoyFQ9hoQkhcXmAegbLaVh2zLFCjBFdotNn");
 
-    // Create instruction data buffer
     const data = Buffer.alloc(24); // 8 bytes for amount + 8 bytes for duration + 8 bytes for receiver
     data.writeBigUInt64LE(BigInt(amount * 1e9), 0); // Convert SOL to lamports
     data.writeBigUInt64LE(BigInt(duration), 8);
@@ -111,13 +110,14 @@ export async function POST(request: Request) {
       requireAllSignatures: false,
     }).toString('base64');
 
-    const response: ActionPostResponse = {
-      transaction: serializedTransaction,
-      message: "Stream created successfully! Stream ID: " + streamId,
-      type: "transaction", // Assuming 'transaction' is the correct type
-    };
-    return Response.json(response, { headers: ACTIONS_CORS_HEADERS });
-    
+    const response: ActionPostResponse = await createPostResponse({
+      fields: {
+        transaction,
+        message: "Stream created successfully! Stream ID: " + streamId,
+        type: "transaction", // Add the required type property
+      },
+    });
+    return new Response(JSON.stringify(response), { headers: ACTIONS_CORS_HEADERS });
   } catch (error: unknown) {
     console.error("Error in POST handler:", error);
     return Response.json(
