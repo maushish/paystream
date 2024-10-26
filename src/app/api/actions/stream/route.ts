@@ -46,8 +46,14 @@ export const GET = async (request: Request) => {
       ]
     }
   };
-  return new Response(JSON.stringify(actionMetdata), { headers: ACTIONS_CORS_HEADERS });
-}
+  const headers = {
+    ...ACTIONS_CORS_HEADERS,   // CORS headers from ACTIONS_CORS_HEADERS
+    "X-Action-Version": "1.0", // Custom header for action version
+    "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
+  };
+  return new Response(JSON.stringify(actionMetdata), {
+    headers: headers,
+  });};
 
 export const OPTIONS = GET;
 
@@ -118,6 +124,7 @@ export async function POST(request: Request) {
       },
     });
     return new Response(JSON.stringify(response), { headers: ACTIONS_CORS_HEADERS });
+    
   } catch (error: unknown) {
     console.error("Error in POST handler:", error);
     return Response.json(

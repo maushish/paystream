@@ -12,6 +12,7 @@ export const GET = async () => {
 
     ],
   };
+  
 
   return Response.json(payload, {
     headers: ACTIONS_CORS_HEADERS,
