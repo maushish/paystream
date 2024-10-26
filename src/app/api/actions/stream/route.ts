@@ -153,8 +153,8 @@ export const GET = async (request: Request) => {
   const actionMetdata: ActionGetResponse = {
     title: "PaystreamV0",
     icon: "https://gcdnb.pbrd.co/images/eIQVKCT500av.png?o=1",
-    description: "An on-chain streams based blink that provides user and client a secure and trustless way to pay for services.",
-    label: "Create Stream (check network payload for stream-id)",
+    description: "An on-chain streams based blink that provides user and client a secure and trustless way to pay for services. (check network payload for stream-id)",
+    label: "Create Stream ",
     links: {
       actions: [
         {
