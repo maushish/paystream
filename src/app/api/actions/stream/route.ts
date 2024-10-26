@@ -46,14 +46,13 @@ export const GET = async (request: Request) => {
       ]
     }
   };
-  const headers = {
-    ...ACTIONS_CORS_HEADERS,   // CORS headers from ACTIONS_CORS_HEADERS
-    "X-Action-Version": "2.1.3", // Custom header for action version
-    "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
-  };
-  return new Response(JSON.stringify(actionMetdata), {
-    headers: headers,
-  });};
+  // const headers = {
+  //   ...ACTIONS_CORS_HEADERS,   // CORS headers from ACTIONS_CORS_HEADERS
+  //   "X-Action-Version": "2.1.3", // Custom header for action version
+  //   "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
+  // };
+  return new Response(JSON.stringify(actionMetdata), { headers: ACTIONS_CORS_HEADERS });
+
 
 export const OPTIONS = GET;
 
@@ -123,12 +122,12 @@ export async function POST(request: Request) {
         type: "transaction", // Add the required type property
       },
     });
-    const headers = {
-      ...ACTIONS_CORS_HEADERS,   // CORS headers from ACTIONS_CORS_HEADERS
-      "X-Action-Version": "2.1.3", // Custom header for action version
-      "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
-    };
-    return new Response(JSON.stringify(response), { headers: headers });
+    // const headers = {
+    //   ...ACTIONS_CORS_HEADERS,   // CORS headers from ACTIONS_CORS_HEADERS
+    //   "X-Action-Version": "2.1.3", // Custom header for action version
+    //   "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
+    // };
+    return new Response(JSON.stringify(response), { headers: ACTIONS_CORS_HEADERS });
     
   } catch (error: unknown) {
     console.error("Error in POST handler:", error);
