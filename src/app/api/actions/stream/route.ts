@@ -164,7 +164,7 @@ export const GET = async (request: Request) => {
           parameters: [
             {
               name: 'duration',
-              label: 'Stream Duration (in seconds)',
+              label: 'Stream Duration (in days)',
               required: true,
             },
             {
