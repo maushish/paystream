@@ -188,7 +188,7 @@ export const GET = async (request: Request) => {
   //   "X-Blockchain-Ids": "solana", // Custom header for blockchain IDs
   // };
   return new Response(JSON.stringify(actionMetdata), { headers: ACTIONS_CORS_HEADERS });
-
+} // Closing brace for the GET function
 
 export const OPTIONS = GET;
 
